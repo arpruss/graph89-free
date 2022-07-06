@@ -37,7 +37,7 @@ public class UIStateManager
 
 	public ControlBar			ControlBarIntstance			= null;
 	public MessageView			MessageViewIntstance		= null;
-	public EmulatorView			EmulatorViewIntstance		= null;
+	public EmulatorView EmulatorViewInstance = null;
 	public ActionsList			ActionsListIntstance		= null;
 	public ButtonHighlightView	ButtonHighlightViewInstance	= null;
 
@@ -53,7 +53,7 @@ public class UIStateManager
 
 		MessageViewIntstance = (MessageView) activity.findViewById(R.id.emulator_main_messageview);
 		ActionsListIntstance = (ActionsList) activity.findViewById(R.id.actionslist);
-		EmulatorViewIntstance = (EmulatorView) activity.findViewById(R.id.emulator_main_emulatorview);
+		EmulatorViewInstance = (EmulatorView) activity.findViewById(R.id.emulator_main_emulatorview);
 		ButtonHighlightViewInstance = (ButtonHighlightView) activity.findViewById(R.id.emulator_main_buttonhighlightview);
 
 		ControlBarIntstance.CalculatorTypeSpinnerInstance.setOnItemSelectedListener(new OnItemSelectedListenerWrapper(new OnItemSelectedListener() {
@@ -80,7 +80,7 @@ public class UIStateManager
 
 	public void ShowTextViewer()
 	{
-		EmulatorViewIntstance.setVisibility(View.GONE);
+		EmulatorViewInstance.setVisibility(View.GONE);
 		HideActions();
 		MessageViewIntstance.setVisibility(View.VISIBLE);
 		ControlBarIntstance.ShowControlBar();
@@ -95,7 +95,7 @@ public class UIStateManager
 		ControlBarIntstance.HideControlBar();
 		MessageViewIntstance.setVisibility(View.GONE);
 		HideActions();
-		EmulatorViewIntstance.setVisibility(View.VISIBLE);
+		EmulatorViewInstance.setVisibility(View.VISIBLE);
 
 		mCurrentUIState = UIStateManager.UI_STATE_EMULATOR;
 	}

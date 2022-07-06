@@ -43,6 +43,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
@@ -125,7 +127,10 @@ public class EmulatorActivity extends Graph89ActivityBase
 	
 	public static int lastButtonPressed = -1;
 	public static int lastlastButtonPressed = -1;
- 
+
+	static Handler delayReleaseHandler = new Handler(Looper.getMainLooper());
+	private static Runnable delayReleaseRunner = null;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -495,7 +500,7 @@ public class EmulatorActivity extends Graph89ActivityBase
 		}
 	}
 
-	public static void SendKeyToCalc(int key, int active, boolean haptic)
+	public static void SendKeyToCalc(final int key, final int active, boolean haptic)
 	{
 		if (IsEmulating)
 		{
@@ -510,14 +515,31 @@ public class EmulatorActivity extends Graph89ActivityBase
 					UIStateManagerObj.MessageViewIntstance.playSoundEffect(SoundEffectConstants.CLICK);
 				}
 			}
-			
+
 			if(active != 0)
 			{
 				EmulatorActivity.lastlastButtonPressed = EmulatorActivity.lastButtonPressed;
 				EmulatorActivity.lastButtonPressed = key;
 			}
-			
-			nativeSendKey(key, active);
+
+			if (delayReleaseRunner != null) {
+				delayReleaseHandler.removeCallbacks(delayReleaseRunner);
+				delayReleaseRunner.run();
+				delayReleaseRunner = null;
+			}
+			if (active == 0) {
+				delayReleaseRunner = new Runnable() {
+					@Override
+					public void run() {
+						delayReleaseRunner = null;
+						nativeSendKey(key, active);
+					}
+				};
+				delayReleaseHandler.postDelayed(delayReleaseRunner, 50);
+			}
+			else {
+				nativeSendKey(key, active);
+			}
 		}
 	}
 
@@ -561,7 +583,7 @@ public class EmulatorActivity extends Graph89ActivityBase
 
 		InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
 
-		inputMethodManager.toggleSoftInputFromWindow(UIStateManagerObj.EmulatorViewIntstance.getWindowToken(), InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+		inputMethodManager.toggleSoftInputFromWindow(UIStateManagerObj.EmulatorViewInstance.getWindowToken(), InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 	}
 
 	public void HideKeyboard()
@@ -692,6 +714,8 @@ public class EmulatorActivity extends Graph89ActivityBase
 	{
 		Window w = this.getWindow();
 		w.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		w.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
 		if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(CalculatorConfiguration.FullScreenModeKey, true)) {
 			w.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		}
@@ -716,7 +740,7 @@ public class EmulatorActivity extends Graph89ActivityBase
 			CalculatorInstances = new CalculatorInstanceHelper(this);
 			GetActiveCalculatorInstance();
 
-			UIStateManagerObj.EmulatorViewIntstance.setOnTouchListener(UIStateManagerObj.EmulatorViewIntstance);
+			UIStateManagerObj.EmulatorViewInstance.setOnTouchListener(UIStateManagerObj.EmulatorViewInstance);
 			VibratorService = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
 			LastTouched = new Date();

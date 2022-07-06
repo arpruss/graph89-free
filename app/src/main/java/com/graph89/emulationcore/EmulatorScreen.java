@@ -206,7 +206,7 @@ public class EmulatorScreen
 			{
 				CRC = newCRC;
 				EmulatorActivity.nativeGetEmulatedScreen(ScreenData);
-				EmulatorActivity.UIStateManagerObj.EmulatorViewIntstance.postInvalidate();
+				EmulatorActivity.UIStateManagerObj.EmulatorViewInstance.postInvalidate();
 			}
 		}
 	}

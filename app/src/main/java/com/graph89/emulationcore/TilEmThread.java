@@ -124,7 +124,7 @@ public class TilEmThread extends EmulatorThread implements Runnable
 				ScreenThread.start();
 
 				EmulatorActivity.IsEmulating = true;
-				EmulatorActivity.UIStateManagerObj.EmulatorViewIntstance.postInvalidate();
+				EmulatorActivity.UIStateManagerObj.EmulatorViewInstance.postInvalidate();
 
 				boolean turbo = false;
 				int runCntr = 0;
