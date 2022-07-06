@@ -124,12 +124,13 @@ public class EmulatorActivity extends Graph89ActivityBase
 
 	public static volatile ArrayList<String>	UploadFilesPath					= null;
 	public static volatile boolean				SyncClock						= false;
-	
+    public static final int						MIN_KEY_PRESS			        = 50;
+
 	public static int lastButtonPressed = -1;
 	public static int lastlastButtonPressed = -1;
 
 	static Handler delayReleaseHandler = new Handler(Looper.getMainLooper());
-	private static Runnable delayReleaseRunner = null;
+	private static PressData pressData[];
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -305,6 +306,18 @@ public class EmulatorActivity extends Graph89ActivityBase
 			ButtonState.Reset();
 			lastButtonPressed = -1;
 			lastlastButtonPressed = -1;
+
+			pressData = new PressData[256];
+			for (int i=0; i<pressData.length ; i++) {
+                pressData[i] = new PressData();
+                final int key = i;
+                pressData[i].releaser = new Runnable() {
+                    @Override
+                    public void run() {
+                        nativeSendKey(key, 0);
+                    }
+                };
+            }
 			
 			UIStateManagerObj.ShowCalc();
 			InitSkin();
@@ -522,28 +535,44 @@ public class EmulatorActivity extends Graph89ActivityBase
 				EmulatorActivity.lastButtonPressed = key;
 			}
 
-			if (delayReleaseRunner != null) {
-				delayReleaseHandler.removeCallbacks(delayReleaseRunner);
-				delayReleaseRunner.run();
-				delayReleaseRunner = null;
-			}
-			if (active == 0) {
-				delayReleaseRunner = new Runnable() {
-					@Override
-					public void run() {
-						delayReleaseRunner = null;
-						nativeSendKey(key, active);
-					}
-				};
-				delayReleaseHandler.postDelayed(delayReleaseRunner, 50);
-			}
-			else {
-				nativeSendKey(key, active);
-			}
+			safeNativeSendKey(key, active);
 		}
 	}
 
-	public static void SendKeysToCalc(int[] keys)
+    private static void safeNativeSendKey(int key, int active) {
+	    if (pressData == null || key >= pressData.length || pressData[key].releaser == null) {
+            nativeSendKey(key, active);
+            return;
+        }
+        PressData data = pressData[key];
+	    long t = System.currentTimeMillis();
+        if (active == 0) {
+            long delta = t - data.pressedTime;
+
+            if (delta >= MIN_KEY_PRESS) {
+            	if (data.delaying) {
+					delayReleaseHandler.removeCallbacks(data.releaser);
+					data.delaying = false;
+				}
+                nativeSendKey(key, active);
+            }
+            else {
+                delayReleaseHandler.removeCallbacks(data.releaser);
+                delayReleaseHandler.postDelayed(data.releaser, MIN_KEY_PRESS-delta);
+                data.delaying = true;
+            }
+        }
+        else {
+            if (data.delaying) {
+                delayReleaseHandler.removeCallbacks(data.releaser);
+                data.delaying = false;
+            }
+            data.pressedTime = t;
+            nativeSendKey(key, active);
+        }
+    }
+
+    public static void SendKeysToCalc(int[] keys)
 	{
 		if (IsEmulating)
 		{
@@ -959,4 +988,10 @@ public class EmulatorActivity extends Graph89ActivityBase
 		System.loadLibrary("tilem-2.0");
 		System.loadLibrary("wrapper");
 	}
+}
+
+class PressData {
+    long pressedTime = 0;
+    Runnable releaser = null;
+    boolean delaying = false;
 }

@@ -20,6 +20,8 @@
 
 package com.graph89.common;
 
+import android.os.Handler;
+
 public class KeyPress
 {
 	public int	KeyCode	= 0;
