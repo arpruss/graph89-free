@@ -1,6 +1,9 @@
 LOCAL_PATH:= $(call my-dir)
-CONV_TOP := jni/libticonv-1.1.3
-GLIB_TOP := jni/glib
+
+JNI := $(LOCAL_PATH)/..
+
+CONV_TOP := $(JNI)/libticonv-1.1.3
+GLIB_TOP := $(JNI)/glib
 
 include $(CLEAR_VARS)
 

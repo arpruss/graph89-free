@@ -496,5 +496,5 @@
 /* Build with android platform */
 #define BUILD_WITH_ANDROID 1
 
-#include <glibconfig.h>
+#include "../../android/glibconfig.h"
 

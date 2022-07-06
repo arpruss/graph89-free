@@ -20,10 +20,10 @@
 /* Written by Bruno Haible <bruno@clisp.org>.  */
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+# include "../../android/config.h"
 #endif
 
-#include <glibconfig.h>
+#include "../../android/glibconfig.h"
 
 #if defined G_PLATFORM_WIN32
 /* Want to use Win32-specific code in this file also on Cygwin */

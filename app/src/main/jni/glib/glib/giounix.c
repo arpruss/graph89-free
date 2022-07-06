@@ -203,6 +203,7 @@ g_io_unix_read (GIOChannel *channel,
             return G_IO_STATUS_AGAIN;
 #endif
           default:
+#pragma clang diagnostic ignored "-Wformat-security"
             g_set_error (err, G_IO_CHANNEL_ERROR,
                          g_io_channel_error_from_errno (errno),
                          g_strerror (errno));

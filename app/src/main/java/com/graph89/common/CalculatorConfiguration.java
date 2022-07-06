@@ -41,6 +41,7 @@ public class CalculatorConfiguration
 	public static final String	TurnOffOnScreenOffKey	= "CONF_OFF_ON_SCREENOFF";
 	public static final String	OrientationKey			= "CONF_ORIENTATION";
 	public static final String	LCDTypeKey				= "CONF_LCD_TYPE";
+	public static final String	FullScreenModeKey		= "CONF_FULL_SCREEN";
 
 	public int					HapticFeedback			= 10;
 	public boolean				AudioFeedBack			= false;
@@ -56,6 +57,7 @@ public class CalculatorConfiguration
 	public boolean				TurnOffOnScreenOff		= true;
 	public String				Orientation				= "Portrait";
 	public boolean				UseLCDGrid				= false;
+	public boolean 				FullScreenMode			= true;
 
 	public int					LCDColor				= 0xFFA5BAA0;
 	public int					PixelOn					= 0xFF000000;

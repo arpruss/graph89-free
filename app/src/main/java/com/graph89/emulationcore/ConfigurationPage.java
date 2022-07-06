@@ -134,6 +134,10 @@ public class ConfigurationPage extends PreferenceActivity implements OnSharedPre
 		{
 			mActiveInstance.Configuration.SaveStateOnExit = sharedPreferences.getBoolean(CalculatorConfiguration.SaveStateOnExitKey, true);
 		}
+		else if (key.equals(CalculatorConfiguration.FullScreenModeKey))
+		{
+			mActiveInstance.Configuration.FullScreenMode = sharedPreferences.getBoolean(CalculatorConfiguration.FullScreenModeKey, true);
+		}
 		else if (key.equals(CalculatorConfiguration.EnableGrayScaleKey))
 		{
 			mActiveInstance.Configuration.EnableGrayScale = sharedPreferences.getBoolean(CalculatorConfiguration.EnableGrayScaleKey, false);
@@ -251,6 +255,7 @@ public class ConfigurationPage extends PreferenceActivity implements OnSharedPre
 		editor.putBoolean(CalculatorConfiguration.OverclockWhenBusyKey, mActiveInstance.Configuration.OverclockWhenBusy);
 		editor.putBoolean(CalculatorConfiguration.EnergySaveKey, mActiveInstance.Configuration.EnergySave);
 		editor.putBoolean(CalculatorConfiguration.SaveStateOnExitKey, mActiveInstance.Configuration.SaveStateOnExit);
+		editor.putBoolean(CalculatorConfiguration.FullScreenModeKey, mActiveInstance.Configuration.FullScreenMode);
 		editor.putBoolean(CalculatorConfiguration.EnableGrayScaleKey, mActiveInstance.Configuration.EnableGrayScale);
 		editor.putBoolean(CalculatorConfiguration.TurnOffOnScreenOffKey, mActiveInstance.Configuration.TurnOffOnScreenOff);
 

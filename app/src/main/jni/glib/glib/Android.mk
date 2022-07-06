@@ -61,8 +61,10 @@ LOCAL_MODULE:= glib-2.0
 
 # ./glib private macros, copy from Makefile.am
 LOCAL_CFLAGS := \
-    -Ijni/glib			\
-    -Ijni/glib/android		\
+    -I$(LOCAL_PATH)/gnulibi \
+    -I$(LOCAL_PATH)/glib			\
+    -I$(LOCAL_PATH)/..			\
+    -I$(LOCAL_PATH)/../android			\
     -I$(LOCAL_PATH)/libcharset		\
     -I$(LOCAL_PATH)/gnulibi		\
     -I$(LOCAL_PATH)/pcre		\
@@ -82,7 +84,7 @@ LOCAL_CFLAGS := \
     -DEBCDIC=0 \
     -DPOSIX_MALLOC_THRESHOLD=10 \
     -DG_DISABLE_DEPRECATED \
-    -DGLIB_COMPILATION 
+    -DGLIB_COMPILATION  
     
 #include $(BUILD_STATIC_LIBRARY)
 include $(BUILD_SHARED_LIBRARY)

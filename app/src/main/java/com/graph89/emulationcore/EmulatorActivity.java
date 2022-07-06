@@ -39,27 +39,32 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 
 import com.Bisha.TI89Emu.R;
 import com.graph89.common.BackwardCompatibility;
+import com.graph89.common.CalculatorConfiguration;
 import com.graph89.common.CalculatorInfoTI84;
 import com.graph89.common.CalculatorInfoTI89;
 import com.graph89.common.CalculatorInfoV200;
@@ -152,6 +157,8 @@ public class EmulatorActivity extends Graph89ActivityBase
 		{
 			InitMembers();
 		}
+
+		InitScreenFlags();
 
 		StartGraph89();
 	}
@@ -683,9 +690,20 @@ public class EmulatorActivity extends Graph89ActivityBase
 
 	private void InitScreenFlags()
 	{
-		android.view.Window w = this.getWindow();
+		Window w = this.getWindow();
 		w.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		w.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(CalculatorConfiguration.FullScreenModeKey, true)) {
+			w.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		}
+		else {
+			w.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		}
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+			w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+			w.setNavigationBarColor(Color.BLACK);
+		}
 	}
 
 	private void InitMembers()

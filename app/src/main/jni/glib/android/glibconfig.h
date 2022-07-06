@@ -6,7 +6,7 @@
 #ifndef __G_LIBCONFIG_H__
 #define __G_LIBCONFIG_H__
 
-#include <glib/gmacros.h>
+#include "../glib/gmacros.h"
 
 #include <limits.h>
 #include <float.h>

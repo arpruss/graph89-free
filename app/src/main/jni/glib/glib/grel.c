@@ -426,6 +426,7 @@ g_relation_print_one (gpointer tuple_key,
     }
   
   g_string_append (gstring, "]");
+#pragma clang diagnostic ignored "-Wformat-security"
   g_log (G_LOG_DOMAIN, G_LOG_LEVEL_INFO, gstring->str);
   g_string_free (gstring, TRUE);
 }

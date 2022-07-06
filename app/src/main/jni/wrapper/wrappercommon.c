@@ -25,7 +25,7 @@
 #include <wrappercommon.h>
 #include <tiemuwrapper.h>
 #include <tilemwrapper.h>
-#include <androidlog.h>
+#include "androidlog.h"
 
 const uint8_t g89_shift_table[]={0x80, 0x40, 0x20, 0x10, 0x8, 0x4, 0x2, 0x1};
 uint32_t g89_crc_table[256];

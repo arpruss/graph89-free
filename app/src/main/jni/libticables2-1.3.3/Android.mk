@@ -1,7 +1,8 @@
 LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
-GLIB_TOP := jni/glib
-CABLES_TOP := jni/libticables2-1.3.3
+JNI := $(LOCAL_PATH)/..
+GLIB_TOP := $(JNI)/glib
+CABLES_TOP := $(JNI)/libticables2-1.3.3
 
 LOCAL_SRC_FILES:= \
 	src/data_log.c \

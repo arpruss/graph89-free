@@ -113,7 +113,13 @@
             android:summary="Set the background color of the LCD. Not always visible!"
             android:title="LCD Background Color" />
 
-    </PreferenceCategory>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="CONF_FULL_SCREEN"
+            android:title="Full Screen Mode"
+            android:summary="Use Android full screen mode (no status bar)" />
+
+        </PreferenceCategory>
 
     <PreferenceCategory android:title="Emulation Settings" >
 

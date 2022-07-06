@@ -1,12 +1,13 @@
 LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
-GLIB_TOP := jni/glib
-CABLES_TOP := jni/libticables2-1.3.3
-TILEM_TOP := jni/tilem-2.0
-CALCS_TOP := jni/libticalcs2-1.1.7
-FILES_TOP := jni/libtifiles2-1.1.5
-CONV_TOP := jni/libticonv-1.1.3
+JNI = $(LOCAL_PATH)/..
+GLIB_TOP := $(JNI)/glib
+CABLES_TOP := $(JNI)/libticables2-1.3.3
+TILEM_TOP := $(JNI)/tilem-2.0
+CALCS_TOP := $(JNI)/libticalcs2-1.1.7
+FILES_TOP := $(JNI)/libtifiles2-1.1.5
+CONV_TOP := $(JNI)/libticonv-1.1.3
 
 LOCAL_SRC_FILES:= \
 	emu/calcs.c \

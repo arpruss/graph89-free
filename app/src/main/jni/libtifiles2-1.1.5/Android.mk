@@ -1,9 +1,10 @@
 LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
-FILES_TOP := jni/libtifiles2-1.1.5
-CONV_TOP := jni/libticonv-1.1.3
-GLIB_TOP := jni/glib
+JNI := $(LOCAL_PATH)/..
+FILES_TOP := $(JNI)/libtifiles2-1.1.5
+CONV_TOP := $(JNI)/libticonv-1.1.3
+GLIB_TOP := $(JNI)/glib
 
 LOCAL_SRC_FILES:= \
 	src/comments.c \
