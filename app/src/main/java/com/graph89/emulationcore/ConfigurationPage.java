@@ -21,12 +21,16 @@ package com.graph89.emulationcore;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.Bisha.TI89Emu.R;
 import com.graph89.common.CalculatorConfiguration;
@@ -67,6 +71,12 @@ public class ConfigurationPage extends PreferenceActivity implements OnSharedPre
 		GetActiveInstance();
 		Init();
 		super.onCreate(savedInstanceState);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			Window w = getWindow();
+			w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+			w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+			w.setNavigationBarColor(Color.BLACK);
+		}
 		this.setRequestedOrientation(EmulatorActivity.Orientation);
 		addPreferencesFromResource(R.layout.settings);
 
