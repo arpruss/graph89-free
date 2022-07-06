@@ -131,6 +131,7 @@ public class EmulatorActivity extends Graph89ActivityBase
 
 	static Handler delayReleaseHandler = new Handler(Looper.getMainLooper());
 	private static PressData pressData[];
+	private static float speedCoefficient = 1f;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -325,7 +326,7 @@ public class EmulatorActivity extends Graph89ActivityBase
 			//fix
 			if (CurrentSkin == null) return;
 			
-			double speedCoefficient = EmulatorActivity.ActiveInstance.Configuration.CPUSpeed / 100.0f;
+			speedCoefficient = EmulatorActivity.ActiveInstance.Configuration.CPUSpeed / 100.0f;
 			
 			EmulatorActivity.nativeInitGraph89(ActiveInstance.CalculatorType,
 					CurrentSkin.Screen.mRawScreenWidth, CurrentSkin.Screen.mRawScreenHeight, CurrentSkin.Screen.Zoom, 
@@ -546,10 +547,11 @@ public class EmulatorActivity extends Graph89ActivityBase
         }
         PressData data = pressData[key];
 	    long t = System.currentTimeMillis();
+	    long minT = (long)( MIN_KEY_PRESS / (speedCoefficient < 1.5f ? speedCoefficient : 1.5f) );
         if (active == 0) {
             long delta = t - data.pressedTime;
 
-            if (delta >= MIN_KEY_PRESS) {
+            if (delta >= minT) {
             	if (data.delaying) {
 					delayReleaseHandler.removeCallbacks(data.releaser);
 					data.delaying = false;
@@ -558,7 +560,7 @@ public class EmulatorActivity extends Graph89ActivityBase
             }
             else {
                 delayReleaseHandler.removeCallbacks(data.releaser);
-                delayReleaseHandler.postDelayed(data.releaser, MIN_KEY_PRESS-delta);
+                delayReleaseHandler.postDelayed(data.releaser, minT-delta);
                 data.delaying = true;
             }
         }
